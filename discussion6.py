@@ -1,3 +1,4 @@
+import csv
 import unittest
 import os
 
@@ -17,7 +18,22 @@ def load_csv(f):
 
     base_path = os.path.abspath(os.path.dirname(__file__))
     full_path = os.path.join(base_path, f)
-    # use this 'full_path' variable as the file that you open
+
+    data = {}  # Dictionary to store the results
+
+    with open(full_path, 'r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row
+
+        for row in reader:
+            year, month, value = row  # Assume 3 columns: year, month, value
+
+            if year not in data:
+                data[year] = {}  # Create sub-dictionary for the year
+
+            data[year][month] = value  # Store value as string (per instructions)
+
+    return data
 
 def get_annual_max(d):
     '''
